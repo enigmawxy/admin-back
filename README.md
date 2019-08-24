@@ -1,3 +1,16 @@
+# 项目说明
+
+1、本项目是作为Parse整体解决方案的后端开发部分
+
+2、增加了Echarts-gl的三维图表报表实例
+
+3、增加了Three.js的集成
+
+4、添加了表格的在线编辑，表格数据生成和查询由Parse-SDK-JS完成。
+
+
+以下是生成这个项目模版的一切说明。
+
 # react-admin([尝试一下](https://codesandbox.io/s/react-admin-u9kdb))
 react-admin system solution
 
