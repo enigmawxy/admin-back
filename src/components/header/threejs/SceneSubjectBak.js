@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from 'three'
 import alphaTexture from '../../../assets/textures/stripes_gradient.jpg';
 
 export default scene => {
@@ -6,14 +6,7 @@ export default scene => {
 
     const subjectGeometry = deformGeometry(new THREE.IcosahedronGeometry(10, 2));
 
-    // const subjectMaterial = new THREE.MeshStandardMaterial({ color: "#000", transparent: true, side: THREE.DoubleSide, alphaTest: 0.5 });
-    const subjectMaterial = new THREE.MeshStandardMaterial({
-        side: THREE.DoubleSide,
-        transparent: true,
-        alphaTest: 0.5
-    });
-    subjectMaterial.color.setHSL(Math.random(), 1, .5);
-
+    const subjectMaterial = new THREE.MeshStandardMaterial({ color: "#000", transparent: true, side: THREE.DoubleSide, alphaTest: 0.5 });
     subjectMaterial.alphaMap = new THREE.TextureLoader().load(alphaTexture);
     subjectMaterial.alphaMap.magFilter = THREE.NearestFilter;
     subjectMaterial.alphaMap.wrapT = THREE.RepeatWrapping;
@@ -32,7 +25,7 @@ export default scene => {
 
     group.rotation.z = Math.PI/4;
 
-    const speed = 0.08;
+    const speed = 0.02;
     const textureOffsetSpeed = 0.02;
 
     function deformGeometry(geometry) {
@@ -46,10 +39,11 @@ export default scene => {
 
     function update(time) {
         const angle = time*speed;
+
         group.rotation.y = angle;
 
         subjectMaterial.alphaMap.offset.y = 0.55 + time * textureOffsetSpeed;
-        // subjectMaterial.color.setHSL(Math.random(), 1, .5);
+
         subjectWireframe.material.color.setHSL( Math.sin(angle*2), 0.5, 0.5 );
 
         const scale = (Math.sin(angle*8)+6.4)/5;
