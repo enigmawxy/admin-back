@@ -133,22 +133,18 @@ export default class EditableTable extends React.Component {
 		query.limit(5000);
 		console.log('1');
 
+		var results = null;
+
 		console.time();
-		let isData = true;
-
-		var results = await query.find();
-		// 	query.find().then(function(res) {
-		// 	console.log(res);
-		// 	results = res;
-		// }, function(error) {
-		// 	console.log('find: ' + error);
-		// 	isData = false;
-		// });
+		try {
+			results = await query.find();
+		} catch (error) {
+			console.log('Error: ' + error.code + " "+ error.message);
+			this.setState({'haveData':false});
+		}
 		console.timeEnd();
-		console.log(results);
-		this.setState({'haveData':isData});
 
-		if(!isData) return;
+		if(!this.state.haveData) return;
 
 		console.log('2');
 		if (results.length === 0) {
