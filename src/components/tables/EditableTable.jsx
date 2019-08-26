@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Button } from 'antd';
+import { Alert, Table, Input, InputNumber, Popconfirm, Form, Button } from 'antd';
 
 var Parse = require('parse');
 Parse.initialize("appid1", "mk1");
@@ -65,7 +65,8 @@ class EditableCell extends React.Component {
 export default class EditableTable extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { editingKey: '' };
+		// this.generateMockData = this.generateMockData().bind(this);
+		this.state = { editingKey: '' , haveData: true};
 		this.columns = [
 			{
 				title: '姓名',
@@ -129,16 +130,27 @@ export default class EditableTable extends React.Component {
 		var theData = [];
 		const BasicInfo = Parse.Object.extend("BasicInfo");
 		const query = new Parse.Query(BasicInfo);
-		// query.greaterThan("age", 17);
 		query.limit(5000);
 		console.log('1');
 
 		console.time();
+		let isData = true;
+
 		var results = await query.find();
+		// 	query.find().then(function(res) {
+		// 	console.log(res);
+		// 	results = res;
+		// }, function(error) {
+		// 	console.log('find: ' + error);
+		// 	isData = false;
+		// });
 		console.timeEnd();
+		console.log(results);
+		this.setState({'haveData':isData});
+
+		if(!isData) return;
 
 		console.log('2');
-		console.log(results.length);
 		if (results.length === 0) {
 			console.log('31');
 			for (let i = 0; i < 100; i++) {
@@ -222,6 +234,8 @@ export default class EditableTable extends React.Component {
 		this.setState({ editingKey: '' });
 	};
 	render() {
+		const isData = this.state.haveData;
+
 		const components = {
 			body: {
 				row: EditableFormRow,
@@ -246,13 +260,23 @@ export default class EditableTable extends React.Component {
 		});
 
 		return (
-			<Table
-				components={components}
-				bordered
-				dataSource={this.state.data}
-				columns={columns}
-				rowClassName="editable-row"
-			/>
+			<div>
+			{ isData?
+				<Table
+					components={components}
+					bordered
+					dataSource={this.state.data}
+					columns={columns}
+					rowClassName="editable-row"
+				/>:
+
+				<Alert
+				message="Error"
+				description="网络不给力呀，请检查网络，后再试！"
+				type="error" showIcon
+				/>
+			}
+			</div>
 		);
 	}
 }
